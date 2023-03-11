@@ -20,9 +20,11 @@ class GmailAPI:
         self.authenticate()
 
     def authenticate(self):
-        # The file token.json stores the user's access and refresh tokens, and is
-        # created automatically when the authorization flow completes for the first
-        # time.
+        """The file token.json stores the user's access and refresh tokens, and is
+        created automatically when the authorization flow completes for the first
+        time.
+        """
+
         creds = self.creds
         token_path = os.path.join("tokens", "tokens.json")
         if os.path.exists(token_path):
@@ -42,6 +44,16 @@ class GmailAPI:
         self.service = build("gmail", "v1", credentials=creds)
 
     def send_email(self, recipient, subject, body):
+        """Send an Email using Google Gmail API
+
+        Args:
+            recipient (str):
+            subject (str):
+            body (str):
+
+        Returns:
+           response : Success Message
+        """
         message = MIMEText(body)
         message["to"] = recipient
         message["subject"] = subject
@@ -63,6 +75,14 @@ class GmailAPI:
         return response
 
     def search_messages(self, query):
+        """Search the mailbox with the query recieved
+
+        Args:
+            query (str):
+
+        Returns:
+            response : Success Message
+        """
         try:
             result = (
                 self.service.users().messages().list(userId="me", q=query).execute()
